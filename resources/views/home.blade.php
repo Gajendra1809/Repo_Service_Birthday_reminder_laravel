@@ -65,7 +65,7 @@
             @endif
             <div style="display:flex;gap: 3px">
                 <button type="submit" style="background-color: green;">Submit</button>
-                <button onclick="openform()" style="background-color: red;">Cancel</button>
+                <button type="button" onclick="openform()" style="background-color: red;">Cancel</button>
             </div>
         </form>
     </div>

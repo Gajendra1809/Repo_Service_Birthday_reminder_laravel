@@ -120,4 +120,27 @@ class AuthController extends Controller
 
         }
     }
+
+    /**
+    * Handle the profile delete request.
+    *
+    * @return \Illuminate\Http\RedirectResponse
+    */
+    public function delete(){
+
+        try {
+
+            $user=auth()->user();
+            $this->userService->logout();
+            $this->userService->delete($user->id);
+
+            return redirect(route('login'))->with('error','User deleted');
+
+        } catch(\Exception $e){
+            
+            return redirect(route('profile'))->with('error','User not deleted');
+
+        }
+
+    }
 }

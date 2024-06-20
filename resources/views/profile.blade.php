@@ -77,6 +77,11 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <button class="btn btn-success mt-5" onclick="openform()">Update Profile</button>
+                                            <form id="deleteForm" action="{{route('profile.delete')}}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" onclick="if(confirm('Are you sure you want to delete this account?')){document.getElementById('deleteForm').submit()}" class="btn btn-danger mt-5">Delete Account</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -85,6 +90,7 @@
                                 <form id="" action="{{ route('profile.post') }}" method="POST"
                                     class="mx-auto">
                                     @csrf
+                                    @method('PUT')
                                     <div class="form-group"><br><br>
                                         <label for="name">
                                             Name
@@ -128,7 +134,7 @@
                                     <button class="btn btn-primary" type="submit">
                                         Save
                                     </button>
-                                    <button class="btn btn-danger" onclick="openform()" >
+                                    <button class="btn btn-danger" type="button" onclick="openform()" >
                                         Cancel
                                     </button>
                                 </form>

@@ -50,7 +50,10 @@ Route::middleware('islogin')->group(function (){
     Route::get("/profile", [AuthController::class,"profile"])->name("profile");
 
     //To handle user profile update post form
-    Route::post("/profile", [AuthController::class,"updateProfile"])->name("profile.post");
+    Route::put("/profile", [AuthController::class,"updateProfile"])->name("profile.post");
+
+    //To handle user profile delete
+    Route::delete("/profile", [AuthController::class,"delete"])->name("profile.delete");
 
 });
 

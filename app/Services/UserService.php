@@ -81,4 +81,15 @@ class UserService
         return $this->repository->update($id, $request);
     }
     
+    /**
+     * delete a user's account.
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function delete($id)
+    {
+        return $this->repository->delete($id);
+    }
+    
 }
