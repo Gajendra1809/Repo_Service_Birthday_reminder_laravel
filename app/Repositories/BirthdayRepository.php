@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Birthday;
 use App\Repositories\Interfaces\BirthdayRepositoryInterface;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class BirthdayRepository
@@ -40,12 +41,11 @@ class BirthdayRepository extends BaseRepository implements BirthdayRepositoryInt
     /**
      * Get all birthdays for a specific user.
      *
-     * @param int $userId
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function allWhereUserId($userId)
+    public function query(): Builder
     {
-        return $this->model->where('user_id', $userId)->get();
+        return $this->model->newQuery();
     }
     
 }

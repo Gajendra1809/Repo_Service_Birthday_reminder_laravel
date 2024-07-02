@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\AddDateRequest;
 use App\Services\BirthdayService;
+use App\DataTables\BirthdayDataTable;
 
 /**
  * Class DateController
@@ -36,12 +37,11 @@ class DateController extends Controller
     * @param  \Illuminate\Http\Request  $request
     * @return \Illuminate\View\View
     */
-    public function index(Request $request){
+    public function index(BirthdayDataTable $dataTable){
 
         $birthday = $this->birthdayService->getUpComing();
-        $data = $this->birthdayService->allWhereUserId(auth()->user()->id);
         
-        return view("home",compact("birthday","data"));
+        return $dataTable->render('home',compact('birthday'));
     }
 
 

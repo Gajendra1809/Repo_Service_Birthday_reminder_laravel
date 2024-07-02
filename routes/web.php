@@ -44,7 +44,7 @@ Route::middleware('islogin')->group(function (){
     Route::post("/create", [DateController::class,"create"])->name("date.post");
 
     //To handle delete, calling create function of DateController
-    Route::delete("/delete/{id}", [DateController::class,"delete"])->name("date.delete");
+    Route::get("/delete/{id}", [DateController::class,"delete"])->name("date.delete");
 
     //To view user profile page
     Route::get("/profile", [AuthController::class,"profile"])->name("profile");

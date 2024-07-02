@@ -7,6 +7,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Models\Birthday;
 use App\Mail\BirthdayReminderMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,11 +18,17 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->call(function () {
-            $dateToCompare = now()->addDays(1)->format('m-d');
-            $birthdays = Birthday::whereRaw("DATE_FORMAT(birthdate, '%m-%d') = ?", [$dateToCompare])->get();
-            
-            foreach ($birthdays as $birthday) {
-                Mail::to($birthday->user->email)->queue(new BirthdayReminderMail($birthday->name));
+            try {
+                $dateToCompare = now()->addDays(1)->format('m-d');
+                $birthdays = Birthday::whereRaw("DATE_FORMAT(birthdate, '%m-%d') = ?", [$dateToCompare])->get();
+                
+                foreach ($birthdays as $birthday) {
+                    Mail::to($birthday->user->email)->queue(new BirthdayReminderMail($birthday->name));
+                }
+
+                Log::info('Birthday reminders sent successfully for date: ' . $dateToCompare);
+            } catch (\Exception $e) {
+                Log::error('Error sending birthday reminders: ' . $e->getMessage());
             }
         })->everyMinute();
     }

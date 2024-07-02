@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\BirthdayRepositoryInterface;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class BirthdayService
@@ -53,12 +54,11 @@ class BirthdayService
     /**
      * Get all birthdays for a specific user.
      *
-     * @param int $userId
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function allWhereUserId($userId)
+    public function query(): Builder
     {
-        return $this->repository->allWhereUserId($userId);
+        return $this->repository->query();
     }
 
     /**

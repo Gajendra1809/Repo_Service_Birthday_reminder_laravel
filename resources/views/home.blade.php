@@ -103,74 +103,10 @@
 
     <!-- List section for showing all birthdates added -->
     <div class="container">
-        <h2>List of all Birthdays</h2>
-        <h5>Apply Filter</h5>
-        <select name="month" id="month" value="" class="dropdown">
-            <option value="all">All</option>
-            <option value="jan">January</option>
-            <option value="feb">February</option>
-            <option value="mar">March</option>
-            <option value="apr">April</option>
-            <option value="may">May</option>
-            <option value="jun">June</option>
-            <option value="jul">July</option>
-            <option value="aug">August</option>
-            <option value="sep">September</option>
-            <option value="oct">October</option>
-            <option value="nov">November</option>
-            <option value="dec">December</option>
-        </select>
-        <input type="text" value="" id="search" placeholder="    ...Search by Name">
-        @if($data->isEmpty())
-            <br><br>
-            <p>No BirthDays Added!</p>
-        @else
-            <table class="table table-striped table-condensed">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Date of Birth</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($data as $d)
-                        <tr class="data-row" data-date="{{ date('M', strtotime($d->birthdate)) }}"
-                            data-name="{{ $d->name }}">
-                            <td>{{ $d->name }}</td>
-                            <td>{{ date('jS F', strtotime($d->birthdate)) }}</td>
-                            <td><button class="btn btn-danger" onclick="if(confirm('Are you sure you want to delete this date?')){deletefun({{ $d->id }})}">Delete</button></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @endif
+        {!! $dataTable->table(['class' => 'table table-bordered']) !!}
     </div>
 
     <script>
-
-        //Delete function to delete birthdate with specified id
-        function deletefun(id) {
-            //console.log(id);
-            let url = '/delete/' + id;
-            fetch(url, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        id: id
-                    })
-                })
-                .then(response => {
-                    console.log('Birthday record deleted successfully');
-                    location.reload();
-                })
-                .catch(error => {
-                    console.error(error.message);
-                });
-        }
 
         //Pop form to add bithday
         openform();
@@ -187,43 +123,11 @@
             "{{ $errors->has('phone_no') }}") {
             //console.log(localStorage.getItem('id'));
             openform();
-        }
-
-
-        //Filter functionality
-        document.getElementById('month').addEventListener('change', function () {
-            var selectedMonth = this.value;
-            var dataRows = document.querySelectorAll('.data-row');
-
-            dataRows.forEach(function (row) {
-                var rowDate = row.getAttribute('data-date');
-                if (selectedMonth == 'all' || rowDate.toLowerCase() === selectedMonth) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
-
-        //Search functionality
-        document.getElementById('search').addEventListener('change', function () {
-            var name = this.value;
-            if (name == "") {
-                location.reload();
-            }
-            var dataRows = document.querySelectorAll('.data-row');
-            console.log(name);
-            dataRows.forEach(function (row) {
-                var rowname = row.getAttribute('data-name');
-                console.log(rowname);
-                if (rowname.toLowerCase() == name.toLowerCase()) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-                this.value = "";
-            });
-        });
+        }     
 
     </script>
     @endsection
+
+    @push('scripts')
+        {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+    @endpush
